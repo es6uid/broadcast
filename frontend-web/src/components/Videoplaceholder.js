@@ -10,7 +10,6 @@ const [broadCast, setBroadCast] = useState()
 
 const [mediaLink, setMediaLink] = useState()
 
-
 useEffect(() => {
     getVideo()
 },[])

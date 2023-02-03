@@ -4,7 +4,7 @@ import Video from './components/Videoplaceholder.js'
 
 function App() {
   return (
-    <div className="App">
+    <div className="App container my-4">
     <Video/>
     </div>
   );

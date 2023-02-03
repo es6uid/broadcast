@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
 import { Configuration, OpenAIApi } from "openai";
 import CreateClass from './Createclass';
+import MediaModal from './MediaModel';
 
 const configuration = new Configuration({
   apiKey: process.env.REACT_APP_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
 
-// const api = `https://glorious-worm-poncho.cyclic.app/api/media`
-const api = `http://localhost:5000/api/media/`
+const api = `https://glorious-worm-poncho.cyclic.app/api/media`
+// const api = `http://localhost:5000/api/media/`
 
 const Video = () => {
   const [userImageInput, setUserImageInput] = useState("");
@@ -16,8 +17,7 @@ const Video = () => {
   const [thumbnail, setThumbnail] = useState();
   const [iFrame, setIframe] = useState();
   const [mediaLink, setMediaLink] = useState();
-  const [visibility, setVisibility] = useState('hello');
-
+  const [mediaModalVisibility, setMediaModalVisibility] = useState('');
 
   const generateImage = async () => {
     const imageParameters = {
@@ -111,12 +111,17 @@ const Video = () => {
                         <p class="card-text">{mediaLink?.description && <p>{mediaLink.description}</p>}</p>
                         <p class="card-text"><small class="text-muted">Created on updated 3 mins ago, created by: Nupur</small></p>
                         <button onClick={deleteSlot} type="button" className="btn btn-outline-danger btn-sm me-2" data-bs-dismiss="modal">Delete</button>
-                        <button onClick={deleteSlot} type="button" className="btn btn-outline-success btn-sm" data-bs-dismiss="modal">Play</button>
+                        <button onClick={() => setMediaModalVisibility('d-block')} type="button" className="btn btn-outline-success btn-sm" data-bs-dismiss="modal">Play</button>
                     </div>
                     </div>
                 </div>
             </div>
-      {mediaLink?.text ? (
+            <MediaModal 
+                mediaLink={mediaLink}
+                mediaModalVisibility={mediaModalVisibility}
+                setMediaModalVisibility={setMediaModalVisibility}
+             />
+      {/* {mediaLink?.text ? (
         <iframe
           className="ytplayer"
           width="560"
@@ -127,7 +132,7 @@ const Video = () => {
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen
         ></iframe>
-      ) : null}
+      ) : null} */}
 
       {/* <button onClick={deleteSlot}>Delete Slot</button>
       {!mediaLink?.text ? (

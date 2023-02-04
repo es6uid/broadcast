@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { Configuration, OpenAIApi } from "openai";
+// import { Configuration, OpenAIApi } from "openai";
 import CreateClass from './Createclass';
 import MediaModal from './MediaModel';
 
-const configuration = new Configuration({
-  apiKey: process.env.REACT_APP_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
+// const configuration = new Configuration({
+//   apiKey: process.env.REACT_APP_API_KEY,
+// });
+// const openai = new OpenAIApi(configuration);
 
 const api = `https://glorious-worm-poncho.cyclic.app/api/media`
 // const api = `http://localhost:5000/api/media/`
@@ -20,15 +20,45 @@ const Video = () => {
   const [mediaModalVisibility, setMediaModalVisibility] = useState('');
 
   const generateImage = async () => {
-    const imageParameters = {
-      prompt: userImageInput,
-      n: 1,
-      size: "256x256",
-    };
-    const response = await openai.createImage(imageParameters);
-    const urlData = response.data.data[0].url;
-    setThumbnail(urlData);
+    const response = await fetch('https://glorious-worm-poncho.cyclic.app/api/openai/generateimage', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        prompt: userImageInput
+      }),
+    }
+  );
+
+  const data = await response.json()
+  console.log(data)
+  setThumbnail(data.data);
+
+
+    // const imageParameters = {
+    //   prompt: userImageInput,
+    //   n: 1,
+    //   size: "256x256",
+    // };
+    // const response = await openai.createImage(imageParameters);
+    // const urlData = response.data.data[0].url;
+    
+    // setThumbnail(urlData);
   };
+
+//   const generateImage = async () => {
+
+//   await fetch('https://api.openai.com/v1/engines/code-davinci-001/completions', requestOptions)
+//       .then(response => response.json())
+//       .then(data => {
+//         // # Do something with data
+//     }).catch(err => {
+//       console.log("Ran out of tokens for today! Try tomorrow!");
+//     });
+// }
+// }
+  
 
   const clearAIImage = () => setThumbnail('');
 

@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "//es6uid.github.io/broadcast/static/css/main.ff7c67fc.css",
-    "main.js": "//es6uid.github.io/broadcast/static/js/main.05892456.js",
-    "static/js/787.0edb8459.chunk.js": "//es6uid.github.io/broadcast/static/js/787.0edb8459.chunk.js",
-    "index.html": "//es6uid.github.io/broadcast/index.html",
-    "main.ff7c67fc.css.map": "//es6uid.github.io/broadcast/static/css/main.ff7c67fc.css.map",
-    "main.05892456.js.map": "//es6uid.github.io/broadcast/static/js/main.05892456.js.map",
-    "787.0edb8459.chunk.js.map": "//es6uid.github.io/broadcast/static/js/787.0edb8459.chunk.js.map"
+    "main.css": "/broadcast/static/css/main.ff7c67fc.css",
+    "main.js": "/broadcast/static/js/main.dbe4074c.js",
+    "static/js/787.0edb8459.chunk.js": "/broadcast/static/js/787.0edb8459.chunk.js",
+    "index.html": "/broadcast/index.html",
+    "main.ff7c67fc.css.map": "/broadcast/static/css/main.ff7c67fc.css.map",
+    "main.dbe4074c.js.map": "/broadcast/static/js/main.dbe4074c.js.map",
+    "787.0edb8459.chunk.js.map": "/broadcast/static/js/787.0edb8459.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ff7c67fc.css",
-    "static/js/main.05892456.js"
+    "static/js/main.dbe4074c.js"
   ]
 }

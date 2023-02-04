@@ -18,19 +18,26 @@ const GenerateAiImage = (props) => {
                             }
                         </div>
                         <div class="mb-3">
-                            <label for="message-text" class="col-form-label">Message:</label>
-                            <textarea onChange={(e) => props.setUserImageInput(e.target.value)} class="form-control"></textarea>
+                            <label for="message-text" class="col-form-label">Start with a detailed description</label>
+                            <textarea onChange={(e) => props.setUserImageInput(e.target.value)} placeholder="An Impressionist oil painting of sunflowers in a purple vase…" class="form-control rounded-0"></textarea>
+                            <button onClick={props.generateImage} class="btn btn-success w-100 rounded-0 mt-2" type="button" id="button-addon2">Generate</button>
+
                         </div>
+                        {/* <div class="input-group input-group-lg mb-3">
+                            <input onChange={(e) => props.setUserImageInput(e.target.value)} placeholder="An Impressionist oil painting of sunflowers in a purple vase…" type="text" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2" />
+                        </div>      */}
                         </form>
                     </div>
 
                     <div className="modal-footer">
-                        <button onClick={props.generateImage} type="button" className="btn btn-outline-success btn-sm" data-bs-dismiss="modal">Generate</button>
+                        {/* <button onClick={props.generateImage} type="button" className="btn btn-outline-success btn-sm" data-bs-dismiss="modal">Generate</button> */}
                         <button type="button" className="btn btn-outline-warning btn-sm" onClick={props.clearAIImage}>Reset</button>
                         <button onClick={() => props.setModalVisibility('d-none')} type="button" className="btn btn-outline-dark btn-sm">Add</button>
+                        {props.openaiLoader ?
                         <div className="spinner-grow" role="status">
                             <span className="visually-hidden">Loading...</span>
-                        </div>
+                        </div> : null
+                        }
                     </div>
                     </div>
                 </div>

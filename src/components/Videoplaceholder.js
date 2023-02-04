@@ -1,12 +1,7 @@
 import { useState, useEffect } from "react";
-// import { Configuration, OpenAIApi } from "openai";
 import CreateClass from './Createclass';
 import MediaModal from './MediaModel';
 
-// const configuration = new Configuration({
-//   apiKey: process.env.REACT_APP_API_KEY,
-// });
-// const openai = new OpenAIApi(configuration);
 
 const api = `https://glorious-worm-poncho.cyclic.app/api/media`
 // const api = `http://localhost:5000/api/media/`
@@ -18,53 +13,41 @@ const Video = () => {
   const [iFrame, setIframe] = useState();
   const [mediaLink, setMediaLink] = useState();
   const [mediaModalVisibility, setMediaModalVisibility] = useState('');
+  const [openaiLoader, setopenaiLoader] = useState(false)
 
   const generateImage = async () => {
-    const response = await fetch('https://glorious-worm-poncho.cyclic.app/api/openai/generateimage', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        prompt: userImageInput
-      }),
+    try {
+      setopenaiLoader(true)
+      const response = await fetch('https://glorious-worm-poncho.cyclic.app/api/openai/generateimage', {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            prompt: userImageInput
+          }),
+        }
+      );
+      if(!response.ok){
+        setopenaiLoader(false)
+        throw new Error('Image could not be generated - Wrong Content');
+      }
+      const data = await response.json()
+      console.log(data)
+      setopenaiLoader(false)
+      setThumbnail(data.data);
+
+    } catch(error) {
+      setopenaiLoader(false)
     }
-  );
-
-  const data = await response.json()
-  console.log(data)
-  setThumbnail(data.data);
-
-
-    // const imageParameters = {
-    //   prompt: userImageInput,
-    //   n: 1,
-    //   size: "256x256",
-    // };
-    // const response = await openai.createImage(imageParameters);
-    // const urlData = response.data.data[0].url;
-    
-    // setThumbnail(urlData);
-  };
-
-//   const generateImage = async () => {
-
-//   await fetch('https://api.openai.com/v1/engines/code-davinci-001/completions', requestOptions)
-//       .then(response => response.json())
-//       .then(data => {
-//         // # Do something with data
-//     }).catch(err => {
-//       console.log("Ran out of tokens for today! Try tomorrow!");
-//     });
-// }
-// }
-  
+  }
 
   const clearAIImage = () => setThumbnail('');
 
   useEffect(() => {
     getVideo();
   }, []);
+  
 
   const getVideo = async () => {
     const data = await fetch(api);
@@ -127,6 +110,9 @@ const Video = () => {
         setDescription={setDescription}
         postVideo={postVideo}
         clearAIImage={clearAIImage}
+        openaiLoader={openaiLoader}
+        setopenaiLoader={setopenaiLoader}
+
     />
 
 
@@ -137,7 +123,7 @@ const Video = () => {
                     </div>
                     <div class="col-md-6">
                     <div class="card-body">
-                        <h5 class="card-title">Create a class</h5>
+                        <h5 class="card-title">Live sessions</h5>
                         <p class="card-text">{mediaLink?.description && <p>{mediaLink.description}</p>}</p>
                         <p class="card-text"><small class="text-muted">Created on updated 3 mins ago, created by: Nupur</small></p>
                         <button onClick={deleteSlot} type="button" className="btn btn-outline-danger btn-sm me-2" data-bs-dismiss="modal">Delete</button>

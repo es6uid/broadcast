@@ -28,3 +28,10 @@
 .modal{
   background-color: #000000b8;
 }
+/* .bi-plus-square-fill,
+.bi-x-square-fill{
+  font-size: 2rem;
+} */
+.bi-trash-fill{
+  font-size: 1rem;
+}

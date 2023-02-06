@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import CreateClass from './Createclass';
 import MediaModal from './MediaModel';
+import placeholder from '../placeholder.jpeg';
 
 
 const api = `https://glorious-worm-poncho.cyclic.app/api/media`
@@ -14,6 +15,8 @@ const Video = () => {
   const [mediaLink, setMediaLink] = useState();
   const [mediaModalVisibility, setMediaModalVisibility] = useState('');
   const [openaiLoader, setopenaiLoader] = useState(false)
+  const [sessionLoader, setSessionLoader] = useState(false)
+  const [deleteLoader, setDeleteLoader] = useState(false)
 
   const generateImage = async () => {
     try {
@@ -58,7 +61,8 @@ const Video = () => {
 
   const postVideo = async () => {
     // console.log(iFrame, thumbnail )
-    await fetch(api, {
+    setSessionLoader(true)
+    const response = await fetch(api, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -70,6 +74,12 @@ const Video = () => {
         }),
       }
     );
+    if(!response.ok){
+      setSessionLoader(false)
+    }else{
+      getVideo()
+    }
+    setSessionLoader(false)
   };
 
 //   const putVideo = async (
@@ -91,27 +101,40 @@ const Video = () => {
 
   // const deleteSlot = async(url = `http://localhost:5000/api/media/${mediaLink?._id}`) => {
   const deleteSlot = async () => {
+    setDeleteLoader(true)
     console.log(`${mediaLink?._id}`);
-    await fetch(`${api}/${mediaLink?._id}`,{
+    if(!mediaLink?._id) {
+      setDeleteLoader(false)
+      return 
+    }
+    const response = await fetch(`${api}/${mediaLink?._id}`,{
         method: "DELETE",
       }
     );
     setMediaLink([]);
+    if(!response.ok){
+      setDeleteLoader(false)
+    }
+    setDeleteLoader(false)
   };
 
   return (
     <div>
         <CreateClass 
         thumbnail={thumbnail} 
+        userImageInput={userImageInput}
         setUserImageInput={setUserImageInput} 
         generateImage={generateImage}
         mediaLink={mediaLink}
+        iFrame={iFrame}
         setIframe={setIframe}
+        description={description}
         setDescription={setDescription}
         postVideo={postVideo}
         clearAIImage={clearAIImage}
         openaiLoader={openaiLoader}
         setopenaiLoader={setopenaiLoader}
+        sessionLoader={sessionLoader}
 
     />
 
@@ -119,17 +142,37 @@ const Video = () => {
 <div class="card mb-3">
                 <div class="row g-0">
                     <div class="col-md-2">
-                        {mediaLink?.thumbnail && <img src={mediaLink.thumbnail} className="m-2 img-thumbnail rounded" alt="aiImage" width='200' height='200' />}
+                        {mediaLink?.thumbnail ? <img src={mediaLink.thumbnail} className="m-2 img-thumbnail rounded" alt="aiImage" width='150' height='150' />
+                        : <img src={placeholder} className="img-thumbnail w-100" alt="aiImage" width='150' height='150'/>
+  }
                     </div>
                     <div class="col-md-6">
                     <div class="card-body">
                         <h5 class="card-title">Live sessions</h5>
                         <p class="card-text">{mediaLink?.description && <p>{mediaLink.description}</p>}</p>
                         <p class="card-text"><small class="text-muted">Created on updated 3 mins ago, created by: Nupur</small></p>
-                        <button onClick={deleteSlot} type="button" className="btn btn-outline-danger btn-sm me-2" data-bs-dismiss="modal">Delete</button>
-                        <button onClick={() => setMediaModalVisibility('d-block')} type="button" className="btn btn-outline-success btn-sm" data-bs-dismiss="modal">Play</button>
+                        { deleteLoader ?
+                          // <button class="btn btn-outline-danger btn-sm  me-2" type="button" disabled>
+                          //   <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                          //   <span class="visually-hidden">Loading...</span>
+                          // </button>
+                          <button class="btn btn-outline-danger btn-sm me-2" type="button" disabled>
+                            <span class="spinner-grow spinner-grow-sm m-1" role="status" aria-hidden="true"></span>
+                            <span class="visually-hidden">Loading...</span>
+                          </button>
+                        :
+                        <button onClick={deleteSlot} type="button" className="btn btn-outline-danger me-2" data-bs-dismiss="modal">
+                          <i class="bi bi-trash"></i>
+                        </button>
+                        
+                       }
+                        <button onClick={() => setMediaModalVisibility('d-block')} type="button" className="btn btn-outline-success" data-bs-dismiss="modal">
+                        <i class="bi bi-play-btn-fill"></i>
+                        </button>
                     </div>
                     </div>
+
+                    
                 </div>
             </div>
             <MediaModal 
@@ -160,3 +203,5 @@ const Video = () => {
 export default Video;
 
 // https://youtu.be/9xaKQi9-VTI
+// Yoga https://youtu.be/glOd-4t_wmo
+// https://www.youtube.com/watch?v=glOd-4t_wmo&ab_channel=YogRiti

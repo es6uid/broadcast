@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import CreateClass from './Createclass';
 import MediaModal from './MediaModel';
-import placeholder from '../placeholder.jpeg';
-
+import Listing from './Listing';
 
 const api = `https://glorious-worm-poncho.cyclic.app/api/media`
 // const api = `http://localhost:5000/api/media/`
@@ -79,7 +78,11 @@ const Video = () => {
     }else{
       getVideo()
     }
+    setThumbnail()
     setSessionLoader(false)
+    setUserImageInput()
+    setDescription()
+    setIframe()
   };
 
 //   const putVideo = async (
@@ -135,68 +138,21 @@ const Video = () => {
         openaiLoader={openaiLoader}
         setopenaiLoader={setopenaiLoader}
         sessionLoader={sessionLoader}
-
     />
-
-
-<div class="card mb-3">
-                <div class="row g-0">
-                    <div class="col-md-2">
-                        {mediaLink?.thumbnail ? <img src={mediaLink.thumbnail} className="m-2 img-thumbnail rounded" alt="aiImage" width='150' height='150' />
-                        : <img src={placeholder} className="img-thumbnail w-100" alt="aiImage" width='150' height='150'/>
-  }
-                    </div>
-                    <div class="col-md-6">
-                    <div class="card-body">
-                        <h5 class="card-title">Live sessions</h5>
-                        <p class="card-text">{mediaLink?.description && <p>{mediaLink.description}</p>}</p>
-                        <p class="card-text"><small class="text-muted">Created on updated 3 mins ago, created by: Nupur</small></p>
-                        { deleteLoader ?
-                          // <button class="btn btn-outline-danger btn-sm  me-2" type="button" disabled>
-                          //   <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                          //   <span class="visually-hidden">Loading...</span>
-                          // </button>
-                          <button class="btn btn-outline-danger btn-sm me-2" type="button" disabled>
-                            <span class="spinner-grow spinner-grow-sm m-1" role="status" aria-hidden="true"></span>
-                            <span class="visually-hidden">Loading...</span>
-                          </button>
-                        :
-                        <button onClick={deleteSlot} type="button" className="btn btn-outline-danger me-2" data-bs-dismiss="modal">
-                          <i class="bi bi-trash"></i>
-                        </button>
-                        
-                       }
-                        <button onClick={() => setMediaModalVisibility('d-block')} type="button" className="btn btn-outline-success" data-bs-dismiss="modal">
-                        <i class="bi bi-play-btn-fill"></i>
-                        </button>
-                    </div>
-                    </div>
-
-                    
-                </div>
-            </div>
-            <MediaModal 
-                mediaLink={mediaLink}
-                mediaModalVisibility={mediaModalVisibility}
-                setMediaModalVisibility={setMediaModalVisibility}
-             />
-      {/* {mediaLink?.text ? (
-        <iframe
-          className="ytplayer"
-          width="560"
-          height="315"
-          src={`https://www.youtube-nocookie.com/embed/${mediaLink?.text}?controls=0`}
-          title="YouTube video player123"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowFullScreen
-        ></iframe>
-      ) : null} */}
-
-      {/* <button onClick={deleteSlot}>Delete Slot</button>
-      {!mediaLink?.text ? (
-        <button onClick={getVideo}>New session</button>
-      ) : null} */}
+      <div className="row">
+          <Listing
+          mediaLink={mediaLink}
+          deleteLoader={deleteLoader}
+          deleteSlot={deleteSlot}
+          setMediaModalVisibility={setMediaModalVisibility}
+          />
+      </div>
+      <MediaModal 
+          mediaLink={mediaLink}
+          mediaModalVisibility={mediaModalVisibility}
+          deleteSlot={deleteSlot}
+          setMediaModalVisibility={setMediaModalVisibility}
+        />
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import GenerateAiImage from './GenerateAI'
 import placeholder from '../placeholder.jpeg';
+import AddUser from './AddUser';
 
 const CreateClass = (props) => {
     const [modalVisibility, setModalVisibility] = useState('');
@@ -13,7 +14,7 @@ const CreateClass = (props) => {
                             <img src={props.thumbnail} className="img-thumbnail w-100 rounded my-1" alt="aiImage" width='150' height='150' />
                             : <img src={placeholder} className="img-thumbnail w-100" alt="aiImage" width='150' height='150'/>
                         }
-                        <button onClick={() => setModalVisibility('d-block')} type="button" className="btn btn-success btn-sm mt-2" data-bs-dismiss="modal">Create Thumbnail</button>
+                        <button onClick={() => setModalVisibility('d-block')} type="button" className="btn btn-success btn-sm mt-2" data-bs-dismiss="modal">Thumbnail <i class="bi bi-images"></i></button>
                         { props.description && props.iFrame ? !props.thumbnail ?
                             <div class="mt-2 badge text-wrap text-warning">
                                 <i class="bi bi-exclamation-triangle-fill"></i> Create Thumbnail
@@ -26,11 +27,11 @@ const CreateClass = (props) => {
                     <div class="col-md-6">
                         <div class="card-body">
                             <h5 class="card-title">Broadcast session</h5>
-                            {!props.mediaLink?.text ? (
+                            {/* {!props.mediaLink?.text ? ( */}
                             <form>
                                 <div class="input-group input-group-sm mb-3">
                                     <span class="input-group-text">Paste Video Link</span>
-                                    <input  onInput={(e) => props.setIframe(e.target.value)} className={ "form-control " + (props.iFrame && ' is-valid') } aria-label="Add Link" />
+                                    <input onInput={(e) => props.setIframe(e.target.value)} className={ "form-control " + (props.iFrame && ' is-valid') } aria-label="Add Link" />
                                     {/* <input type="text" class="form-control is-invalid" required /> */}
 
                                 </div>
@@ -50,9 +51,12 @@ const CreateClass = (props) => {
                                     </div>
                                 }
                                 </form>
-                                // disabled={!props.description || !props.iFrame ? true : false}
-                            ) : null}
+                                {/* // disabled={!props.description || !props.iFrame ? true : false} */}
+                            {/* ) : null} */}
                         </div>
+                    </div>
+                    <div className='col-md-4'>
+                        <AddUser />
                     </div>
                 </div>
                 <GenerateAiImage

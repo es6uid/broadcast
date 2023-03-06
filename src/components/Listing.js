@@ -9,8 +9,9 @@ const Listing = (props) => {
             
             {props.mediaLink ? 
             <div className="card-body">
-                <h5 className="card-title">Card title</h5>
-                <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <h5 className="card-title">{props.mediaLink.text}</h5>
+                <p className="card-text">{props.mediaLink.description}</p>
+                <p className="card-text">Created by: {props.mediaLink.broadCast_email}</p>
                 { props.deleteLoader ?
                     <button className="btn btn-outline-danger btn-sm me-2" type="button" disabled>
                         <span className="spinner-grow spinner-grow-sm m-1" role="status" aria-hidden="true"></span>
@@ -21,9 +22,13 @@ const Listing = (props) => {
                     <i className="bi bi-trash"></i>
                     </button>
                 }
-                <button onClick={() => props.setMediaModalVisibility('d-block')} type="button" className="btn btn-outline-success" data-bs-dismiss="modal">
+                {/* <button onClick={() => props.setMediaModalVisibility('d-block')} type="button" className="btn btn-outline-success" data-bs-dismiss="modal">
                         <i class="bi bi-play-btn-fill"></i>
-                    </button>
+                    </button> */}
+                <button onClick={props.getPoolUsers} type="button" className="btn btn-outline-success" data-bs-dismiss="modal">
+                    <i class="bi bi-play-btn-fill"></i>
+                </button>
+                    
             </div> : 
             <div class="card-body">
             <h5 class="card-title placeholder-glow">

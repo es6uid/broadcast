@@ -7,7 +7,7 @@ const CreateClass = (props) => {
     const [modalVisibility, setModalVisibility] = useState('');
     return(
         <div>
-            <div class="card mb-3">
+            <div class="card mb-3 ">
                 <div class="row g-0">
                     <div class="col-md-2 p-3 text-center bg-light rounded">
                         {props.thumbnail ? 
@@ -27,6 +27,9 @@ const CreateClass = (props) => {
                     <div class="col-md-6">
                         <div class="card-body">
                             <h5 class="card-title">Broadcast session</h5>
+                            {/* <button onClick={props.changeClass}>Click</button> */}
+                            <button type="button" class="position-absolute top-0 end-0 btn-close m-1" onClick={props.changeClass}></button>
+
                             {/* {!props.mediaLink?.text ? ( */}
                             <form>
                                 <div class="input-group input-group-sm mb-3">
@@ -56,7 +59,12 @@ const CreateClass = (props) => {
                         </div>
                     </div>
                     <div className='col-md-4'>
-                        <AddUser />
+                        <AddUser 
+                            loggedInUser= {props?.loggedInUser}
+                            fetchUserPool = {props.fetchUserPool}
+                            userPool={props.userPool}
+                            deletePoolUser={props.deletePoolUser}
+                        />
                     </div>
                 </div>
                 <GenerateAiImage

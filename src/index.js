@@ -15,3 +15,14 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+// API
+// GET
+// http://localhost:5000/api/user?email=shivu@gmail.com
+// POST
+// http://localhost:5000/api/user?email=shivu@gmail.com
+// PAYLOAD
+// {
+//   "email":"yash@gmail.com",
+//   "status":false
+// }

@@ -8,7 +8,8 @@ const Header = (props) => {
         <nav className="navbar navbar-expand-lg bg-body-tertiary mb-3">
             <div className="container-fluid">
                 {/* <a className="navbar-brand" href="#">Navbar w/ text</a> */}
-                <button class="btn btn-outline-success" onClick={props.changeClass}>Create new class</button>
+                <button class="btn btn-outline-success me-2" onClick={() => props.setClassModalVisibility('d-block')}>Create session</button>
+                <button class="btn btn-outline-success" onClick={() => props.setPoolModalVisibility('d-block')}>Manage Pool</button>
 
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>

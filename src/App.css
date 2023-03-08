@@ -50,7 +50,7 @@
 .delete-btn:hover{ opacity: 1 !important}
 .createClass{
   position: absolute;
-  top: -510px;
+  top: -1010px;
   left:20px;
   right:20px;
   transition: top 1s;
@@ -58,5 +58,5 @@
 }
 .inactive{
   /* background-color:red; */
-  top:50px
+  top:20px
 }

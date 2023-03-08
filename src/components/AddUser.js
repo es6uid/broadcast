@@ -1,6 +1,6 @@
 import { useState } from 'react'
 // const api = `https://glorious-worm-poncho.cyclic.app/api`
-const api = `http://localhost:5000/api`
+// const api = `http://localhost:5000/api`
 
 const AddUser = (props) => {
     const [ userMail, setUserMail ] = useState();
@@ -30,8 +30,8 @@ const AddUser = (props) => {
         // if(userMail) 
         // setaddUser([...addUser, userMail])
         try{
-            // const response = await fetch(`${api}/user`, {
-            const response = await fetch(`${api}/pool`, {
+            // const response = await fetch(`${props.api}/user`, {
+            const response = await fetch(`${props.api}/pool`, {
 
                 method: "POST",
                 headers: {
@@ -94,7 +94,6 @@ const AddUser = (props) => {
     return(
         <div className="card-body">
             <h5 class="card-title">
-                Add Pool 
                 { duplicateEmail && <span className='text-danger fs-6 ps-1'>User Email Exists!</span>}
             </h5>
             <form>
@@ -102,7 +101,7 @@ const AddUser = (props) => {
             <div className="input-group mb-4">
                     <input onInput={(e) => validateEmail(e.target.value)} type="email" className="form-control" placeholder="Recipient's email" aria-label="Recipient's username with two button addons" />
                     {<button onClick={saveUser} className="btn btn-outline-secondary" type="button" disabled={!userMail ? true : false }>Add</button> }
-                    <button className="btn btn-outline-secondary" type="button" disabled={!userMail ? true : false }>Clear</button>
+                    {/* <button className="btn btn-outline-secondary" type="button" disabled={!userMail ? true : false }>Clear</button> */}
             </div>
             </form>
             {/* <p>123 {props}</p> */}
@@ -116,8 +115,8 @@ const AddUser = (props) => {
                     props.userPool && props.userPool.map((user) => {
                         return(
                             <li className="list-group-item pad-2" key={user._id}>
-                                {/* <input className="form-check-input me-1" type="checkbox" value="" id="firstCheckbox" /> */}
-                                <label className="form-check-label" for="firstCheckbox">{user.pool_email} {user._id}</label>
+                                <input className="form-check-input me-1" type="checkbox" value="" disabled />
+                                <label className="form-check-label">{user.pool_email}</label>
                                 <i onClick={() => props.deletePoolUser(user._id)} role='button' class="delete-btn bi bi-trash text-danger opacity-75 float-end"></i>
                             </li>
                         )

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import LoginModal from './LoginModal';
 import Header from './Header';
 import CreateClass from './Createclass';
+import AddUser from './AddUser';
 import MediaModal from './MediaModel';
 import Listing from './Listing';
 
@@ -19,8 +20,13 @@ const Video = () => {
   const [sessionLoader, setSessionLoader] = useState(false)
   const [deleteLoader, setDeleteLoader] = useState(false)
   const [loginSignupModalVisibility, setLoginSignupModalVisibility] = useState('d-block');
+  const [classModalVisibility, setClassModalVisibility] = useState('d-none');
+  const [poolModalVisibility, setPoolModalVisibility] = useState('d-none');
+
+
   const [loggedInUser, setLoggedUser] = useState();
   const [userPool, setUserPool] = useState();
+  const [poolReady, setPoolReady] = useState(false)
 
   
 
@@ -47,6 +53,7 @@ const Video = () => {
       // setaddUser([...addUser, userMail])
       try{
         const response = await fetch(`${api}/user/?email=${userMail}&isLoggedIn=true`)
+        const users = await response.json();
 
           // const response = await fetch(`${api}/user`, {
           //     method: "POST",
@@ -59,13 +66,13 @@ const Video = () => {
           // }
           // );
           // const users = await response.json();
-          // console.log(users)
+          console.log(users)
 
           // setaddUser([...addUser, response.email])
-          if(response.ok){
+          if(response.ok && (users != null)){
             setLoginSignupModalVisibility('d-none')
             // console.log(await response.json())
-            setLoggedUser(await response.json())
+            setLoggedUser(users)
             console.log(loggedInUser)
             getVideo()
           }
@@ -162,6 +169,7 @@ const Video = () => {
     }else{
       getVideo()
     }
+    setClassModalVisibility('d-none')
     setThumbnail()
     setSessionLoader(false)
     setUserImageInput()
@@ -229,17 +237,19 @@ const Video = () => {
 //   {"email": "anshul"}
 
 const [linkedPoolUsers, setLinkedPoolUsers] = useState([])
-const [poolActiveUsers, setPoolActiveUsers] = useState([])
+// const [poolActiveUsers, setPoolActiveUsers] = useState([])
+let poolusr = '';
+let timmer = 0;
 const getPoolUsers = async() => {
+    setMediaModalVisibility('d-block')
     const getPoolEmails = await fetch(`${api}/pool?broadCast_email=${mediaLink.broadCast_email}`)
     const resGetPoolEmails = await getPoolEmails.json()
-    if(getPoolEmails.status){
-      // console.log()
-      setLinkedPoolUsers(resGetPoolEmails)
-    }
-
-    let poolusr = '';
-    linkedPoolUsers.forEach((i) => {
+    if(getPoolEmails.status === 200){
+      // console.log(resGetPoolEmails)
+      // setLinkedPoolUsers(resGetPoolEmails)
+      // console.log(linkedPoolUsers)
+    
+      resGetPoolEmails.forEach((i) => {
       poolusr += `email=${i.pool_email}&`
     })
 
@@ -247,23 +257,27 @@ const getPoolUsers = async() => {
     const response = await fetch(`${api}/user/getPoolUsersStatus?${poolusr}`)
     // http://localhost:5000/api/user/getPoolUsersStatus?email=ansh@g.com&email=shivu@gmail.com
     const res = await response.json()
-
+    
     let checker = arr => arr.every(v => v.status === true);
-console.log(checker(res))
-if(checker(res) === true){
-  setMediaModalVisibility('d-block')
-}
+    console.log(checker(res))
+    if(checker(res) === true){
+      // setMediaModalVisibility('d-block')
+      setPoolReady(true)
+    }
 
-    if(response.status){
+    if(response.status && (timmer < 5)){
         res.map(user => {
           if(!user.status){
             console.log('false')
             setTimeout(() => {
               getPoolUsers()
-            }, 5000)
+              timmer++;
+            }, 10000)
           }
+          console.log(timmer)
         })
     }
+}
 }
 
 // const playVideoFlag = () => {
@@ -287,8 +301,8 @@ if(checker(res) === true){
         setLoginSignupModalVisibility={setLoginSignupModalVisibility}
         api={api}
         userMail={userMail}
-        changeClass={changeClass}
-
+        setClassModalVisibility={setClassModalVisibility}
+        setPoolModalVisibility={setPoolModalVisibility}
         />
         {/* {linkedPoolUsers && linkedPoolUsers.map((user) => {
           return(
@@ -296,7 +310,72 @@ if(checker(res) === true){
           )
         })} */}
         {/* <button onClick={getPoolUsers}>Get Pool Users</button> */}
-        <div className= {isActive ? "bgactive": "bginactive"}>
+
+        <div className={`modal ${classModalVisibility}`} tabindex="-1">
+        <div className="modal-dialog modal-xl modal-dialog-scrollable">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">Broadcast session</h5>
+              <button type="button" onClick={() => setClassModalVisibility('d-none')} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div className="modal-body">
+            <CreateClass
+            thumbnail={thumbnail} 
+            userImageInput={userImageInput}
+            setUserImageInput={setUserImageInput} 
+            generateImage={generateImage}
+            mediaLink={mediaLink}
+            iFrame={iFrame}
+            setIframe={setIframe}
+            description={description}
+            setDescription={setDescription}
+            postVideo={postVideo}
+            clearAIImage={clearAIImage}
+            openaiLoader={openaiLoader}
+            setopenaiLoader={setopenaiLoader}
+            sessionLoader={sessionLoader}
+            loggedInUser={loggedInUser}
+            fetchUserPool={fetchUserPool}
+            userPool={userPool}
+            deletePoolUser={deletePoolUser}
+            changeClass={changeClass}
+            api={api}
+        />
+            </div>
+            <div class="modal-footer">
+              <button type="button" onClick={() => setClassModalVisibility('d-none')} class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button onClick={postVideo} type="submit" className="btn btn-success btn-sm" data-bs-dismiss="modal" disabled={!iFrame || !description || !thumbnail ? true : false}>Broadcast <i class="bi bi-send ms-1"></i></button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className={`modal ${poolModalVisibility}`} tabindex="-1">
+        <div className="modal-dialog modal-dialog-scrollable">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">Add Pool Users</h5>
+              <button type="button" onClick={() => setPoolModalVisibility('d-none')} className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div className="modal-body">
+              <AddUser 
+                  loggedInUser= {loggedInUser}
+                  fetchUserPool = {fetchUserPool}
+                  userPool={userPool}
+                  deletePoolUser={deletePoolUser}
+                  api={api}
+              />
+            </div>
+            <div class="modal-footer">
+              <button type="button" onClick={() => setPoolModalVisibility('d-none')} class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              {/* <button type="button" class="btn btn-primary">Save changes</button> */}
+            </div>
+          </div>
+        </div>
+      </div>
+
+        {/* <div className= {isActive ? "bgactive": "bginactive"}>
           <div className= {isActive ? "active createClass": "inactive createClass"}>
             <CreateClass
             thumbnail={thumbnail} 
@@ -318,9 +397,10 @@ if(checker(res) === true){
             userPool={userPool}
             deletePoolUser={deletePoolUser}
             changeClass={changeClass}
+            api={api}
         />
         </div>
-      </div>
+      </div> */}
       <div className="row">
           <Listing
           mediaLink={mediaLink}
@@ -335,6 +415,8 @@ if(checker(res) === true){
           mediaModalVisibility={mediaModalVisibility}
           deleteSlot={deleteSlot}
           setMediaModalVisibility={setMediaModalVisibility}
+          poolReady={poolReady}
+          setPoolReady={setPoolReady}
         />
     </div>
   );

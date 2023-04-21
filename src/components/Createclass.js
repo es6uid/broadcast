@@ -1,13 +1,14 @@
 import {useState} from 'react';
 import GenerateAiImage from './GenerateAI'
 import placeholder from '../placeholder.jpeg';
-import AddUser from './AddUser';
+// import AddUser from './AddUser';
 
 const CreateClass = (props) => {
     const [modalVisibility, setModalVisibility] = useState('');
     return(
-        <div className="test">
-            <div className="card ">
+        <div className="row">
+            <div className='col-md-12'>
+                <div className="card ">
                 <div className="row g-0">
                     <div className="col-md-2 p-3 text-center bg-light rounded">
                         {props.thumbnail ? 
@@ -58,16 +59,9 @@ const CreateClass = (props) => {
                             {/* ) : null} */}
                         </div>
                     </div>
-                    {/* <div className='col-md-4'>
-                        <AddUser 
-                            loggedInUser= {props?.loggedInUser}
-                            fetchUserPool = {props.fetchUserPool}
-                            userPool={props.userPool}
-                            deletePoolUser={props.deletePoolUser}
-                            api={props.api}
-                        />
-                    </div> */}
+                    
                 </div>
+                
                 <GenerateAiImage
                 thumbnail={props.thumbnail}
                 userImageInput={props.userImageInput}
@@ -79,8 +73,24 @@ const CreateClass = (props) => {
                 openaiLoader={props.openaiLoader}
                 setopenaiLoader={props.setopenaiLoader}
                 />
+                </div>
             </div>
-      </div>
+            {/* <div className='col-md-3'> */}
+            {/* <div className='row'> */}
+                {/* <div className='col-md-4 mt-3'> */}
+                        {/* <AddUser 
+                            loggedInUser= {props?.loggedInUser}
+                            fetchUserPool = {props.fetchUserPool}
+                            userPool={props.userPool}
+                            deletePoolUser={props.deletePoolUser}
+                            api={props.api}
+                        /> */}
+                    {/* </div> */}
+                {/* </div> */}
+
+            {/* </div> */}
+            
+        </div>
     )
 }
 export default CreateClass

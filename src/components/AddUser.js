@@ -15,9 +15,13 @@ const AddUser = (props) => {
     // }
 
     const validateEmail = (email) => {
+        // console.log('hi')
         var re = /\S+@\S+\.\S+/
-        if(re.test(email))
-        setUserMail(email)
+        if(re.test(email)){
+            setUserMail(email)
+        }else{
+            setUserMail()
+        }
     }
     
     // const fetchUser = async() => {
@@ -27,6 +31,7 @@ const AddUser = (props) => {
     // } 
 
     const saveUser = async() => {
+        // alert('hi')
         // if(userMail) 
         // setaddUser([...addUser, userMail])
         try{
@@ -39,7 +44,8 @@ const AddUser = (props) => {
                 },
                 body: JSON.stringify({
                     broadCast_email: props.loggedInUser.email,
-                    pool_email: userMail
+                    pool_email: userMail,
+                    play_video: false
                 }),
             }
             );
@@ -93,7 +99,7 @@ const AddUser = (props) => {
     
     return(
         <div className="card-body">
-            <h5 class="card-title">
+            <h5 className="card-title">
                 { duplicateEmail && <span className='text-danger fs-6 ps-1'>User Email Exists!</span>}
             </h5>
             <form>
@@ -115,9 +121,9 @@ const AddUser = (props) => {
                     props.userPool && props.userPool.map((user) => {
                         return(
                             <li className="list-group-item pad-2" key={user._id}>
-                                <input className="form-check-input me-1" type="checkbox" value="" disabled />
+                                {/* <input className="form-check-input me-1" type="checkbox" value="" disabled /> */}
                                 <label className="form-check-label">{user.pool_email}</label>
-                                <i onClick={() => props.deletePoolUser(user._id)} role='button' class="delete-btn bi bi-trash text-danger opacity-75 float-end"></i>
+                                <i onClick={() => props.deletePoolUser(user._id)} role='button' className="delete-btn bi bi-trash text-danger opacity-75 float-end"></i>
                             </li>
                         )
                     })
